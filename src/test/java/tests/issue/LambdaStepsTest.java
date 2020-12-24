@@ -1,4 +1,4 @@
-package tests;
+package tests.issue;
 
 import com.codeborne.selenide.Condition;
 import io.qameta.allure.Feature;
@@ -8,6 +8,8 @@ import io.qameta.allure.Story;
 import org.junit.jupiter.api.*;
 import utils.PropertiesReader;
 
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
@@ -15,13 +17,13 @@ import static io.qameta.allure.Allure.step;
 public class LambdaStepsTest {
 
   private static final String
-          GITHUB_URI = "https://github.com",
-          LOGIN_PATH = "/login",
-          USER = new PropertiesReader("credentials").getProperty("user"),
-          PASSWORD = new PropertiesReader("credentials").getProperty("password"),
-          CREATE_ISSUE_PATH = "/issues/new",
-          ISSUE_NAME = "Test issue",
-          ISSUE_LABEL = "good first issue";
+    GITHUB_URI = "https://github.com",
+    LOGIN_PATH = "/login",
+    USER = new PropertiesReader("credentials").getProperty("user"),
+    PASSWORD = new PropertiesReader("credentials").getProperty("password"),
+    CREATE_ISSUE_PATH = "/issues/new",
+    ISSUE_NAME = "Test issue",
+    ISSUE_LABEL = "good first issue";
 
   @BeforeEach
   public void logIn() {
@@ -50,7 +52,7 @@ public class LambdaStepsTest {
 
     step("Go to the Create Issue page.", () -> {
       $("nav[aria-label='Repository']").$("[data-content='Issues']").click();
-      $$(String.format("[href*='%s']", CREATE_ISSUE_PATH)).find(Condition.visible).click();
+      $$(String.format("[href*='%s']", CREATE_ISSUE_PATH)).find(visible).click();
     });
 
     step("Entry the issue's name.", () -> {
@@ -78,9 +80,8 @@ public class LambdaStepsTest {
     });
 
     step("Check that the issue has all entered attributes.", () -> {
-      $("[role='group']").$("[id*='issue_']:first-child").shouldHave(Condition.text(ISSUE_NAME));
-      $("[role='group']").$("[id*='issue_']:first-child").shouldHave(Condition.text(USER));
-      $("[role='group']").$("[id*='issue_']:first-child").shouldHave(Condition.text(ISSUE_LABEL));
+      $("[role='group']").$("[id*='issue_']:first-child")
+        .shouldHave(text(ISSUE_NAME), text(USER), text(ISSUE_LABEL));
     });
   }
 

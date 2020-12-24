@@ -24,7 +24,6 @@ ext.jupiter = [
 ]
 
 dependencies {
-  implementation 'org.jetbrains:annotations:20.1.0'
   testImplementation selenide
   testImplementation jupiter.api
   testRuntimeOnly jupiter.engine
